@@ -1,6 +1,10 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = "agmdc-super-secret-key-2025";
+}
+
 export default withAuth(
   function middleware(req) {
     const url = req.nextUrl.pathname;
@@ -30,6 +34,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token }) => !!token, // Only authenticated users can access the matcher routes
     },
+    secret: process.env.NEXTAUTH_SECRET || "agmdc-super-secret-key-2025",
   }
 );
 
