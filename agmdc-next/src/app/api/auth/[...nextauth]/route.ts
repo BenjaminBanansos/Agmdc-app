@@ -4,6 +4,10 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import speakeasy from "speakeasy";
 
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = "agmdc-super-secret-key-2025";
+}
+
 import { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
