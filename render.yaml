@@ -1,0 +1,28 @@
+services:
+  # Next.js Frontend and API
+  - type: web
+    name: agmdc-next
+    env: node
+    plan: free
+    rootDir: agmdc-next
+    buildCommand: npm install && npx prisma generate && npx prisma db push && node prisma/seed.js && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATABASE_URL
+        value: "file:./dev.db"
+      - key: NEXTAUTH_SECRET
+        value: "agmdc-super-secret-key-2025"
+
+  # WhatsApp Automation Backend
+  - type: web
+    name: agmdc-whatsapp-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
