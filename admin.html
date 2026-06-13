@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGMDC - Admin Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* SVGs for icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            opacity: 0.8;
+        }
+
+        .sidebar-nav a.active .icon {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- Premium Dark Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>AGMDC Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active" onclick="switchView('dashboard')">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                                </path>
+                            </svg>
+                            Dashboard
+                        </a></li>
+                    <li><a href="#" onclick="switchView('pipeline')">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                                </path>
+                            </svg>
+                            Pipeline
+                        </a></li>
+                    <li><a href="#" onclick="switchView('candidates')">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                            Candidates
+                        </a></li>
+                    <li><a href="#" onclick="switchView('inbox')">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                </path>
+                            </svg>
+                            Inbox & Files
+                        </a></li>
+                    <li><a href="#">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            Events
+                        </a></li>
+                    <li><a href="#">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4">
+                                </path>
+                            </svg>
+                            Resources
+                        </a></li>
+                    <li><a href="index.html" style="margin-top: auto; color: #E8AF30;">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Back to Site
+                        </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard View -->
+            <div id="view-dashboard">
+                <header style="background: transparent; border: none; box-shadow: none; padding: 0 0 30px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Dashboard</h1>
+                            <p style="color: var(--text-muted);">Welcome back, Admin</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <button class="btn btn-secondary">
+                                <span style="font-size: 1.2rem; display: block; margin-top: -3px;">+</span>
+                            </button>
+                            <div style="width: 40px; height: 40px; background: #E2E8F0; border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Stats Grid -->
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 40px;">
+                    <div class="card">
+                        <h3 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;">Total
+                            Candidates</h3>
+                        <div id="stat-candidates" style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin: 10px 0;">0</div>
+                        <div style="color: #48BB78; font-size: 0.9rem; font-weight: 500;">↑ 12% vs last month</div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;">Active
+                            Projects</h3>
+                        <div id="stat-pipeline" style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin: 10px 0;">0</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">2 nearing completion</div>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;">Upcoming
+                            Events</h3>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin: 10px 0;">5
+                        </div>
+                        <div style="color: #E8AF30; font-size: 0.9rem; font-weight: 500;">Next: Youth Camp</div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Table -->
+                <div class="card">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="font-size: 1.2rem;">Recent Pipeline Activity</h2>
+                        <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">View All</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Candidate / Project</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-pipeline-table">
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600; color: var(--primary-color);">Rev. Thomas Mathew</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">ID: #AG-2490</div>
+                                </td>
+                                <td>Ordination</td>
+                                <td><span class="badge badge-pending">Pending Review</span></td>
+                                <td>Oct 24, 2025</td>
+                                <td><button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 0.8rem;">Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600; color: var(--primary-color);">Youth Camp 2025</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">North Region</div>
+                                </td>
+                                <td>Event</td>
+                                <td><span class="badge badge-active">Active</span></td>
+                                <td>Nov 12, 2025</td>
+                                <td><button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 0.8rem;">Manage</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600; color: var(--primary-color);">New Church Cons.</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">Punalur</div>
+                                </td>
+                                <td>Project</td>
+                                <td><span class="badge badge-active">In Progress</span></td>
+                                <td>Oct 20, 2025</td>
+                                <td><button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 0.8rem;">Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Inbox & File Management View -->
+            <div id="view-inbox" class="view-section" style="display: none;">
+                <header style="margin-bottom: 30px;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Inbox & File Management</h1>
+                            <p style="color: var(--text-muted);">Central hub for all incoming documents.</p>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Source Tabs -->
+                <div class="mb-4">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active"
+                            onclick="filterInbox('all', this)">All Files</button>
+                        <button type="button" class="btn btn-outline-primary"
+                            onclick="filterInbox('whatsapp', this)">WhatsApp</button>
+                        <button type="button" class="btn btn-outline-primary"
+                            onclick="filterInbox('email', this)">Email</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="filterInbox('upload', this)">Web
+                            Uploads</button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                    <!-- LEFT COLUMN: Inbox List -->
+                    <div class="card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 style="font-size: 1.3rem; margin-bottom: 0;">Incoming Files</h2>
+                            <div class="btn-group">
+                                <button onclick="simulateEmail()" class="btn btn-sm btn-outline-warning"
+                                    title="Test Email">
+                                    + Test Email
+                                </button>
+                                <button onclick="document.getElementById('manual-inbox-upload').click()"
+                                    class="btn btn-sm btn-outline-secondary" title="Upload File">
+                                    + Upload File
+                                </button>
+                                <input type="file" id="manual-inbox-upload" style="display: none;"
+                                    onchange="handleManualInboxUpload(this)">
+                            </div>
+                        </div>
+
+                        <div id="inbox-loading" class="text-muted small">Loading...</div>
+                        <div id="inbox-list" class="list-group" style="max-height: 600px; overflow-y: auto;">
+                            <!-- Dynamic Items -->
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: Allocation & Tools -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                        <!-- Allocation Tool -->
+                        <div class="card" style="border-left: 5px solid #17a2b8;">
+                            <h3 style="font-size: 1.1rem; color: #138496; margin-bottom: 15px;">📂 Allocate to
+                                Department</h3>
+                            <form id="wa-allocate-form" onsubmit="handleWAAllocate(event); return false;">
+                                <div class="form-group mb-3">
+                                    <label>Select File from Inbox</label>
+                                    <select id="wa-allocate-inbox-id" class="form-control" required>
+                                        <option value="">-- Choose File --</option>
+                                    </select>
+                                </div>
+
+                                <!-- Hierarchy Controls -->
+                                <div class="form-group mb-3">
+                                    <label>Region</label>
+                                    <select id="wa-allocate-region" class="form-control">
+                                        <option value="">-- Select Region (Optional) --</option>
+                                        <option value="North">North Region</option>
+                                        <option value="South">South Region</option>
+                                        <option value="East">East Region</option>
+                                        <option value="West">West Region</option>
+                                        <option value="Central">Central Region</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label>Section</label>
+                                    <input type="text" id="wa-allocate-section" class="form-control"
+                                        placeholder="Section Name (Optional)">
+                                </div>
+
+                                <!-- Department / Category with Add New -->
+                                <div class="form-group mb-3">
+                                    <label>Department / Category</label>
+                                    <div class="d-flex gap-2">
+                                        <select id="wa-allocate-dept" class="form-control" required>
+                                            <option value="">-- Select Destination --</option>
+                                        </select>
+                                        <button class="btn btn-outline-secondary" onclick="promptAddDepartment()"
+                                            type="button" title="Add New Department">+</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label>Title / Description</label>
+                                    <input type="text" id="wa-allocate-title" class="form-control"
+                                        placeholder="Document Title" required>
+                                </div>
+                                <button type="submit" class="btn btn-info text-white" style="width: 100%;">Allocate to
+                                    Hierarchy</button>
+                            </form>
+                        </div>
+
+                        <!-- WhatsApp Sender (Mini) -->
+                        <div class="card">
+                            <h3 style="font-size: 1rem; color: var(--text-muted);">Quick WhatsApp Send</h3>
+                            <form id="wa-send-form" onsubmit="handleWASend(event); return false;">
+                                <input type="file" id="wa-doc-upload" class="form-control mb-2"
+                                    style="font-size: 0.8rem;">
+                                <input type="text" id="wa-numbers" class="form-control mb-2" placeholder="Phone Number"
+                                    style="font-size: 0.8rem;">
+                                <button type="submit" class="btn btn-sm btn-outline-primary"
+                                    style="width: 100%;">Send</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidates View -->
+            <div id="view-candidates" class="view-section" style="display: none;">
+                <header style="margin-bottom: 30px;">
+                    <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Candidates Management</h1>
+                    <p style="color: var(--text-muted);">Manage personnel and ordination status.</p>
+                </header>
+
+                <div class="card mb-4">
+                    <h3>Add New Candidate</h3>
+                    <form id="add-candidate-form" onsubmit="handleAddCandidate(event); return false;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <input type="text" id="cand-name" class="form-control" placeholder="Full Name" required>
+                            <input type="text" id="cand-role" class="form-control" placeholder="Role (e.g., Pastor, Councilor)" required>
+                            <select id="cand-status" class="form-control" required>
+                                <option value="Active">Active</option>
+                                <option value="Pending Review">Pending Review</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Add Candidate</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidates-list">
+                            <!-- Dynamic Items -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pipeline View -->
+            <div id="view-pipeline" class="view-section" style="display: none;">
+                <header style="margin-bottom: 30px;">
+                    <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Pipeline Management</h1>
+                    <p style="color: var(--text-muted);">Track ongoing projects and events.</p>
+                </header>
+
+                <div class="card mb-4">
+                    <h3>Add New Pipeline Item</h3>
+                    <form id="add-pipeline-form" onsubmit="handleAddPipeline(event); return false;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <input type="text" id="pipe-name" class="form-control" placeholder="Project / Event Name" required>
+                            <input type="text" id="pipe-type" class="form-control" placeholder="Type (e.g., Construction, Event)" required>
+                            <select id="pipe-status" class="form-control" required>
+                                <option value="Active">Active</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Pending Review">Pending Review</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Add Pipeline Item</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pipeline-list">
+                            <!-- Dynamic Items -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/app.js?v=3"></script>
+</body>
+
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI Data Management - AGMDC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            padding: 0 2rem;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-tab {
+            padding: 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .kpi-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.5rem;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>AGMDC BI & Data Forms</h2>
+        <a href="../admin.html" style="color: var(--text-muted); text-decoration: none;">&larr; Back to Admin</a>
+    </div>
+
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="switchTab('dashboard')">BI Dashboard</div>
+        <div class="nav-tab" onclick="switchTab('upload')">Excel Import</div>
+        <div class="nav-tab" onclick="switchTab('manual')">Single Entry</div>
+    </div>
+
+    <div class="container">
+        
+        <!-- DASHBOARD TAB -->
+        <div id="tab-dashboard">
+            <div class="card">
+                <h3>Pastor Performance Explorer</h3>
+                <div class="form-group" style="max-width: 400px;">
+                    <label>Select Pastor</label>
+                    <select id="pastor-select" class="form-control" onchange="loadPastorAnalytics()">
+                        <option value="">-- Choose Pastor --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="analytics-content" class="hidden">
+                <div class="dashboard-grid">
+                    <div class="kpi-card">
+                        <div style="color: var(--text-muted); text-transform: uppercase; font-size: 0.875rem; font-weight: 600;">Total Baptisms</div>
+                        <div class="kpi-value" id="kpi-baptisms">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div style="color: var(--text-muted); text-transform: uppercase; font-size: 0.875rem; font-weight: 600;">Average Attendance</div>
+                        <div class="kpi-value" id="kpi-attendance">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div style="color: var(--text-muted); text-transform: uppercase; font-size: 0.875rem; font-weight: 600;">Churches Pastored</div>
+                        <div class="kpi-value" id="kpi-churches">0</div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>Attendance Trend (Assigned Churches)</h3>
+                    <canvas id="attendanceChart" height="100"></canvas>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>Pastoral Assignments History</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="assignments-table">
+                            <thead>
+                                <tr>
+                                    <th>Pastor ID</th>
+                                    <th>Church ID</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Transfer Reason</th>
+                                    <th>Complaints</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>Correlated Performance Metrics</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="metrics-table">
+                            <thead>
+                                <tr>
+                                    <th>Church ID</th>
+                                    <th>Metric Date</th>
+                                    <th>Attendance</th>
+                                    <th>Baptisms</th>
+                                    <th>Membership Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXCEL UPLOAD TAB -->
+        <div id="tab-upload" class="hidden">
+            <div class="card">
+                <h3>Bulk Data Import</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Upload an Excel (.xlsx) file to populate the relational database. Data will be validated and automatically cross-checked.</p>
+                
+                <div class="form-group" style="max-width: 300px; margin-bottom: 2rem;">
+                    <label>Target Database Table</label>
+                    <select id="upload-target" class="form-control">
+                        <option value="pastors">Pastors Directory</option>
+                        <option value="churches">Churches Directory</option>
+                        <option value="assignments">Pastoral Assignments History</option>
+                        <option value="metrics">Performance Metrics (Attendance etc.)</option>
+                    </select>
+                </div>
+
+                <div class="upload-zone" onclick="document.getElementById('excel-file').click()">
+                    <svg style="width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    <h4>Click to upload Excel File</h4>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Supported formats: .xlsx, .csv</p>
+                    <input type="file" id="excel-file" class="hidden" accept=".xlsx, .csv" onchange="handleFileUpload(event)">
+                </div>
+                <div id="upload-status" style="margin-top: 1rem; text-align: center; font-weight: 500;"></div>
+            </div>
+        </div>
+
+        <!-- MANUAL ENTRY TAB -->
+        <div id="tab-manual" class="hidden">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <h3>Single Metric Entry</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Manually log a performance metric for a specific church.</p>
+                
+                <form id="manual-form" onsubmit="handleManualSubmit(event)">
+                    <div class="form-group">
+                        <label>Church ID</label>
+                        <input type="text" id="manual-church" class="form-control" required placeholder="e.g. CH-001">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="manual-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Attendance</label>
+                        <input type="number" id="manual-att" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Baptisms</label>
+                        <input type="number" id="manual-bap" class="form-control" value="0">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Submit Metric</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

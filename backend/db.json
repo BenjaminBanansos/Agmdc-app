@@ -1,0 +1,51 @@
+{
+    "inbox": [
+        {
+            "id": "email_1778057825371",
+            "source": "email",
+            "sender": "test.sender@example.com",
+            "filename": "dummy_email_attachment_1778057825371.txt",
+            "mimetype": "text/plain",
+            "timestamp": "2026-05-06T08:57:05.373Z",
+            "caption": "Subject: Urgent: Quarterly Financial Report Payment"
+        }
+    ],
+    "hierarchy": {
+        "regions": [
+            {
+                "name": "Southern Region",
+                "sections": [
+                    {
+                        "name": "Trivandrum Section",
+                        "churches": [
+                            "Ag Church Central",
+                            "Ag Church Vattiyoorkavu"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "pipelines": {
+        "legal": [],
+        "assets": [],
+        "accounts": [],
+        "transfers": [],
+        "appointments": []
+    },
+    "institutions": {
+        "bethel": [],
+        "bethany": [],
+        "ag_public_school": []
+    },
+    "candidates": [],
+    "pipeline": [
+        {
+            "id": "proj_1777881140959",
+            "name": "Town AG church",
+            "type": "amangement ",
+            "status": "In Progress",
+            "timestamp": "2026-05-04T07:52:20.000Z"
+        }
+    ]
+}

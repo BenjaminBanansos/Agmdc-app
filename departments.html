@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments - AGMDC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .dept-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .dept-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+
+        .dept-card p {
+            color: #666;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .dept-card .btn-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .dept-card .btn-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h2>AGMDC</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="history.html">About Us</a></li>
+                    <li><a href="departments.html" class="active">Departments</a></li>
+                    <li><a href="institutions.html">Institutions</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="downloads.html">Downloads</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container page-content-layout section-padding">
+
+        <main class="main-body" style="width: 100%;">
+
+            <h1>Our Departments</h1>
+            <p class="lead">The various functional arms of the Assemblies of God Malayalam District Council, working
+                towards the holistic growth of the church and society.</p>
+
+            <div class="dept-grid">
+
+                <div class="dept-card">
+                    <h3>Sunday School</h3>
+                    <p>Promoting spiritual well-being of children from age 4 to 18 with a structured 52-week curriculum.
+                    </p>
+                    <a href="sunday-school.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Christ's Ambassadors (CA)</h3>
+                    <p>The operational wing for youth, focusing on holistic development and empowering young people for
+                        ministry.</p>
+                    <a href="ca.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Women's Missionary Council</h3>
+                    <p>Mobilizing women for prayer, missions, and charitable works within the church and community.</p>
+                    <a href="wmc.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>North India Missions</h3>
+                    <p>Training and sending workers to the unreached fields of North India to plant churches.</p>
+                    <a href="north-india-missions.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Kerala Mission</h3>
+                    <p>Pioneering new churches in unreached areas within Kerala through identified mission stations.</p>
+                    <a href="kerala-mission.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Evangelism</h3>
+                    <p>Organizing conventions, open-air meetings, and house visits to proclaim the Gospel.</p>
+                    <a href="evangelism.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Charity & Social Welfare</h3>
+                    <p>Providing aid to the sick, orphans, widows, and the financially destitute.</p>
+                    <a href="charity.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Land & Building</h3>
+                    <p>Monitoring property documentation, legal validity, and construction plans for local churches.</p>
+                    <a href="land-building.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Church Tribunal</h3>
+                    <p>Resolving grievances and appeals from local church members and committees.</p>
+                    <a href="church-tribunal.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Media Department</h3>
+                    <p>Managing the council's digital presence, website, and publications.</p>
+                    <a href="media.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+            </div>
+
+            <!-- New Departments Section -->
+            <div class="dept-grid" style="margin-top: 25px;">
+                <div class="dept-card">
+                    <h3>Pastors Children's Fellowship</h3>
+                    <p>Providing fellowship, mutual support, and care for ministers’ children.</p>
+                    <a href="pcf.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Prayer Department</h3>
+                    <p>Equipping and encouraging churches and individuals to pray continually and effectively.</p>
+                    <a href="prayer.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Social Welfare</h3>
+                    <p>Promoting the welfare of the disadvantaged, elderly, and those in need of compassionate response.
+                    </p>
+                    <a href="social-welfare.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Aged Ministers' Welfare</h3>
+                    <p>Responsible for the welfare, security and support of the aged ministers of the MDC.</p>
+                    <a href="aged-welfare.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Deceased Ministers' Wives</h3>
+                    <p>Supporting and providing fellowship for the wives of deceased ministers.</p>
+                    <a href="widows-fellowship.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Discipleship Training</h3>
+                    <p>Training believers as disciples of Jesus Christ through structured Bible study and curriculum.
+                    </p>
+                    <a href="discipleship.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Health Care</h3>
+                    <p>Medical professionals serving the church and community through medical camps and clinics.</p>
+                    <a href="health-care.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Counselling</h3>
+                    <p>Offering counselling services to individuals and families facing emotional challenges and crises.
+                    </p>
+                    <a href="counselling.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Disaster Management</h3>
+                    <p>Providing help and leadership during natural calamities and accidents.</p>
+                    <a href="disaster-management.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Legal Aid</h3>
+                    <p>Offering advice and mediation on legal matters for the MDC.</p>
+                    <a href="legal-aid.html" class="btn-link">View Details &rarr;</a>
+                </div>
+
+                <div class="dept-card">
+                    <h3>Ministers' Advanced Training</h3>
+                    <p>Deepening commitment and updating skills for ministers through advanced training camps.</p>
+                    <a href="mat.html" class="btn-link">View Details &rarr;</a>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Assemblies of God Malayalam District Council. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

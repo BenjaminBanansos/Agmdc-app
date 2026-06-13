@@ -1,0 +1,534 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1A2744;--navy2:#243660;--navy3:#2E4480;
+  --gold:#B8860B;--gold-l:#F5D87A;--gold-pale:#FDF8EC;
+  --green:#15803D;--green-l:#DCFCE7;--green-t:#166534;
+  --blue:#1D4ED8;--blue-l:#DBEAFE;--blue-t:#1E3A8A;
+  --amber:#92400E;--amber-l:#FEF3C7;
+  --red:#991B1B;--red-l:#FEE2E2;
+  --purple:#5B21B6;--purple-l:#EDE9FE;--purple-t:#4C1D95;
+  --teal:#0F766E;--teal-l:#CCFBF1;
+  --bg:var(--color-background-primary);
+  --bg2:var(--color-background-secondary);
+  --border:var(--color-border-tertiary);
+  --text:var(--color-text-primary);
+  --muted:var(--color-text-secondary);
+}
+body{font-family:var(--font-sans);color:var(--text)}
+.app{max-width:680px}
+
+.header{background:var(--navy);padding:16px 20px 14px;border-radius:12px;margin-bottom:16px}
+.header-label{font-size:9px;letter-spacing:2px;color:rgba(245,216,122,0.7);text-transform:uppercase;margin-bottom:4px}
+.header-title{font-size:17px;font-weight:500;color:#fff}
+.header-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px}
+
+.tab-row{display:flex;gap:0;border-bottom:0.5px solid var(--border);margin-bottom:16px;overflow-x:auto;scrollbar-width:none}
+.tab-row::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:8px 14px;font-size:11px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:var(--muted);font-family:inherit;white-space:nowrap;transition:all .15s}
+.tab.active{border-bottom-color:var(--gold);color:var(--text);font-weight:500}
+
+.section{display:none}.section.active{display:block}
+
+.tier-wrap{margin-bottom:12px}
+.tier-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:500}
+
+.ec-box{background:var(--navy);border-radius:12px;padding:14px 16px;margin-bottom:6px}
+.ec-title{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:8px;letter-spacing:0.5px}
+.ec-members{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.ec-member{background:rgba(255,255,255,0.08);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;transition:background .15s}
+.ec-member:hover{background:rgba(255,255,255,0.14)}
+.ec-avatar{width:28px;height:28px;border-radius:50%;background:var(--gold);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:var(--navy)}
+.ec-role{font-size:9px;color:rgba(255,255,255,0.9);font-weight:500;line-height:1.2;text-align:center}
+.ec-sub-role{font-size:8px;color:rgba(255,255,255,0.4);margin-top:1px;text-align:center}
+
+.connector{display:flex;justify-content:center;margin:2px 0}
+.connector-line{width:1px;height:12px;background:var(--border)}
+
+.regions-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.region-box{border-radius:10px;padding:10px 12px;border:0.5px solid var(--border);background:var(--bg)}
+.region-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.region-dir{font-size:10px;color:var(--muted)}
+.region-stat{font-size:10px;color:var(--muted);margin-top:6px;border-top:0.5px solid var(--border);padding-top:5px}
+.region-badge{display:inline-block;font-size:9px;padding:1px 6px;border-radius:6px;margin-top:3px}
+
+.sections-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.section-box{border-radius:8px;padding:8px 10px;border:0.5px solid var(--border);background:var(--bg2);text-align:center}
+.section-box .num{font-size:18px;font-weight:500;color:var(--text)}
+.section-box .lbl{font-size:10px;color:var(--muted);margin-top:1px}
+
+.church-strip{background:var(--bg);border:0.5px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.church-count{font-size:22px;font-weight:500;color:var(--text);flex:none}
+.church-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+.flow-card{background:var(--bg);border:0.5px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.flow-card-head{padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--border)}
+.flow-card-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.flow-card-title{font-size:12px;font-weight:500;color:var(--text)}
+.flow-card-sub{font-size:10px;color:var(--muted)}
+.flow-body{padding:10px 14px}
+
+.flow-step{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.flow-step:last-child{margin-bottom:0}
+.step-circle{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex:none;margin-top:1px}
+.step-content{flex:1}
+.step-name{font-size:11px;font-weight:500;color:var(--text)}
+.step-detail{font-size:10px;color:var(--muted);margin-top:1px;line-height:1.4}
+.step-arrow{color:var(--muted);font-size:10px;margin:2px 0 6px 28px}
+
+.cred-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.cred-level{border-radius:10px;padding:12px;border:0.5px solid var(--border)}
+.cred-level-num{font-size:11px;font-weight:500;margin-bottom:6px}
+.cred-level-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.cred-level-req{font-size:10px;color:var(--muted);line-height:1.5}
+.cred-level-tag{display:inline-block;font-size:9px;padding:2px 7px;border-radius:8px;margin-top:5px}
+.cred-tag-1{background:var(--blue-l);color:var(--blue-t)}
+.cred-tag-2{background:var(--green-l);color:var(--green-t)}
+.cred-tag-3{background:var(--gold-pale);color:var(--amber);border:0.5px solid rgba(184,134,11,0.3)}
+
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cert-card{background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px}
+.cert-icon{font-size:18px;margin-bottom:5px}
+.cert-name{font-size:11px;font-weight:500;color:var(--text);margin-bottom:2px}
+.cert-issued-by{font-size:10px;color:var(--muted)}
+.cert-auth{font-size:10px;margin-top:4px;padding:3px 7px;border-radius:6px;display:inline-block}
+
+.complaint-chain{position:relative}
+.complaint-node{display:flex;gap:10px;align-items:flex-start;margin-bottom:0;padding:10px 14px;border-bottom:0.5px solid var(--border)}
+.complaint-node:last-child{border-bottom:none}
+.c-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex:none;margin-top:1px}
+.c-name{font-size:12px;font-weight:500;color:var(--text)}
+.c-desc{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
+.c-badge{display:inline-block;font-size:9px;padding:2px 7px;border-radius:8px;margin-top:3px}
+
+.conf-box{background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.conf-rule{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.conf-rule:last-child{border-bottom:none}
+.conf-rule-dot{width:6px;height:6px;border-radius:50%;background:var(--navy);margin-top:4px;flex:none}
+.conf-rule-text{font-size:11px;color:var(--text);line-height:1.5}
+.conf-rule-text strong{font-weight:500}
+.eligibility-box{background:var(--gold-pale);border:0.5px solid rgba(184,134,11,0.25);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.eligibility-title{font-size:11px;font-weight:500;color:var(--amber);margin-bottom:6px}
+.eligibility-item{font-size:10px;color:var(--text);padding:3px 0;display:flex;gap:6px;align-items:flex-start}
+.eligibility-item::before{content:'·';color:var(--gold);font-size:14px;line-height:1;flex:none}
+
+.dept-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dept-card{background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px}
+.dept-icon{font-size:16px;margin-bottom:4px}
+.dept-name{font-size:11px;font-weight:500;color:var(--text)}
+.dept-head{font-size:10px;color:var(--muted);margin-top:1px}
+.dept-tag{font-size:9px;padding:2px 7px;border-radius:6px;margin-top:4px;display:inline-block}
+
+.church-rept{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rept-card{background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center}
+.rept-icon{font-size:20px;margin-bottom:3px}
+.rept-label{font-size:10px;color:var(--muted)}
+.rept-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+.transfer-flow{background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.transfer-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.transfer-row:last-child{margin-bottom:0}
+.transfer-from{flex:1;background:var(--bg2);border-radius:7px;padding:6px 8px;font-size:10px;color:var(--text);font-weight:500}
+.transfer-arrow{font-size:16px;color:var(--muted);flex:none}
+.transfer-to{flex:1;background:var(--bg2);border-radius:7px;padding:6px 8px;font-size:10px;color:var(--text);font-weight:500}
+.transfer-via{font-size:9px;color:var(--muted);text-align:center;margin-top:2px}
+
+.intl-box{background:var(--bg);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.intl-flag{font-size:20px;flex:none}
+.intl-name{font-size:12px;font-weight:500;color:var(--text)}
+.intl-type{font-size:10px;color:var(--muted);margin-top:1px}
+</style>
+
+<div class="app">
+  <div class="header">
+    <div class="header-label">Complete Governance Model</div>
+    <div class="header-title">Assemblies of God — Malayalam District Council</div>
+    <div class="header-sub">Administrative structure, credential system, policies, and church management</div>
+  </div>
+
+  <div class="tab-row">
+    <button class="tab active" onclick="show('structure')">Structure</button>
+    <button class="tab" onclick="show('conference')">Conference &amp; Policy</button>
+    <button class="tab" onclick="show('credentials')">Credentials</button>
+    <button class="tab" onclick="show('complaints')">Complaints</button>
+    <button class="tab" onclick="show('certificates')">Certificates</button>
+    <button class="tab" onclick="show('transfers')">Transfers</button>
+    <button class="tab" onclick="show('departments')">Departments</button>
+    <button class="tab" onclick="show('reporting')">Reporting</button>
+  </div>
+
+  <!-- STRUCTURE -->
+  <div class="section active" id="s-structure">
+    <div class="tier-wrap">
+      <div class="tier-label">Tier 1 — Executive Committee (supreme administrative authority)</div>
+      <div class="ec-box">
+        <div class="ec-title">Five officers · elected · all must be ordained ministers</div>
+        <div class="ec-members">
+          <div class="ec-member"><div class="ec-avatar">S</div><div class="ec-role">Superintendent</div><div class="ec-sub-role">Presiding officer</div></div>
+          <div class="ec-member"><div class="ec-avatar">AS</div><div class="ec-role">Asst. Superintendent</div><div class="ec-sub-role">Deputy</div></div>
+          <div class="ec-member"><div class="ec-avatar">SE</div><div class="ec-role">Secretary</div><div class="ec-sub-role">Records &amp; admin</div></div>
+          <div class="ec-member"><div class="ec-avatar">TR</div><div class="ec-role">Treasurer</div><div class="ec-sub-role">Finance</div></div>
+          <div class="ec-member"><div class="ec-avatar">CM</div><div class="ec-role">Committee Member</div><div class="ec-sub-role">General member</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div></div>
+
+    <div class="tier-wrap">
+      <div class="tier-label">Tier 1B — Presbytery (major decisions body)</div>
+      <div class="flow-card" style="margin-bottom:10px">
+        <div class="flow-card-head">
+          <div class="flow-card-icon" style="background:var(--purple-l);color:var(--purple-t)"><i class="ti ti-users-group"></i></div>
+          <div><div class="flow-card-title">Presbytery</div><div class="flow-card-sub">Presided by Superintendent + EC officers · includes all Regional Directors + Presbyters</div></div>
+        </div>
+        <div class="flow-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="font-size:10px;color:var(--muted)"><i class="ti ti-check" style="font-size:11px;color:var(--green);margin-right:3px"></i>Major administrative decisions</div>
+          <div style="font-size:10px;color:var(--muted)"><i class="ti ti-check" style="font-size:11px;color:var(--green);margin-right:3px"></i>Policy implementation</div>
+          <div style="font-size:10px;color:var(--muted)"><i class="ti ti-check" style="font-size:11px;color:var(--green);margin-right:3px"></i>Regional Director elections</div>
+          <div style="font-size:10px;color:var(--muted)"><i class="ti ti-check" style="font-size:11px;color:var(--green);margin-right:3px"></i>Credential oversight</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div></div>
+
+    <div class="tier-wrap">
+      <div class="tier-label">Tier 2 — Three regions</div>
+      <div class="regions-row">
+        <div class="region-box">
+          <div class="region-name">South Region</div>
+          <div class="region-dir">Regional Director</div>
+          <div class="region-stat">~13–15 sections<br><span class="region-badge" style="background:var(--blue-l);color:var(--blue-t)">~280 churches</span></div>
+        </div>
+        <div class="region-box">
+          <div class="region-name">Central Region</div>
+          <div class="region-dir">Regional Director</div>
+          <div class="region-stat">~13–15 sections<br><span class="region-badge" style="background:var(--green-l);color:var(--green-t)">~340 churches</span></div>
+        </div>
+        <div class="region-box">
+          <div class="region-name">North Region</div>
+          <div class="region-dir">Regional Director</div>
+          <div class="region-stat">~13–15 sections<br><span class="region-badge" style="background:var(--amber-l);color:var(--amber)">~280 churches</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div></div>
+
+    <div class="tier-wrap">
+      <div class="tier-label">Tier 3 — Sections (40–45 sections total, ~20 churches each)</div>
+      <div class="sections-row">
+        <div class="section-box"><div class="num">40–45</div><div class="lbl">Sections</div></div>
+        <div class="section-box"><div class="num">~20</div><div class="lbl">Churches per section</div></div>
+        <div class="section-box"><div class="num">1</div><div class="lbl">Presbyter per section</div></div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div></div>
+
+    <div class="tier-wrap">
+      <div class="tier-label">Tier 4 — Churches &amp; Believers</div>
+      <div class="church-strip">
+        <div class="church-count">~1,000</div>
+        <div class="church-desc">Registered churches · each with an ordained or credentialed pastor · reports families, members, and activities to district annually</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFERENCE & POLICY -->
+  <div class="section" id="s-conference">
+    <div class="tier-label" style="margin-bottom:8px">Supreme legislative body</div>
+    <div class="conf-box">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:0.5px solid var(--border)">
+        <div style="width:36px;height:36px;border-radius:9px;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold-l);font-size:16px;flex:none"><i class="ti ti-building-community"></i></div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--text)">Biannual General Conference</div>
+          <div style="font-size:10px;color:var(--muted)">Held every two years · highest legislative authority of the district</div>
+        </div>
+      </div>
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Policy changes require <strong>at least 2/3 majority</strong> of conference participants</div></div>
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Elects Executive Committee officers for the term</div></div>
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Reviews and ratifies constitutional or bylaw amendments</div></div>
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Presided by outgoing Superintendent until new EC is elected</div></div>
+    </div>
+
+    <div class="tier-label" style="margin-bottom:8px">Conference voting eligibility</div>
+    <div class="eligibility-box">
+      <div class="eligibility-title">Who can vote at the Biannual Conference</div>
+      <div class="eligibility-item">All pastors holding a <strong>Certificate or Ordination</strong> credential (License to Preach holders do not vote)</div>
+      <div class="eligibility-item">One authorised lay representative per <strong>recognised church</strong> (meeting conditional membership requirements)</div>
+      <div class="eligibility-item">Church recognition determined by district process — minimum members, regular reporting, financial compliance</div>
+    </div>
+
+    <div class="tier-label" style="margin-bottom:8px">Election rules</div>
+    <div class="conf-box">
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Only <strong>ordained ministers</strong> are eligible to contest for any Executive Committee or Regional Director position</div></div>
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Regional Director elections are overseen by the Presbytery and ratified at Conference</div></div>
+      <div class="conf-rule"><div class="conf-rule-dot"></div><div class="conf-rule-text">Presbyter elections are held at section level, subject to regional oversight</div></div>
+    </div>
+  </div>
+
+  <!-- CREDENTIALS -->
+  <div class="section" id="s-credentials">
+    <div class="tier-label" style="margin-bottom:8px">Three-tier pastoral credential system</div>
+    <div class="cred-levels">
+      <div class="cred-level" style="border-color:rgba(29,78,216,0.3)">
+        <div class="cred-level-num" style="color:var(--blue)">Level 1</div>
+        <div class="cred-level-name">License to Preach</div>
+        <div class="cred-level-req">Entry level. Permits preaching and limited ministry functions. Cannot vote at conference. Cannot contest elections.</div>
+        <div class="cred-level-tag cred-tag-1">Entry</div>
+      </div>
+      <div class="cred-level" style="border-color:rgba(21,128,61,0.3)">
+        <div class="cred-level-num" style="color:var(--green)">Level 2</div>
+        <div class="cred-level-name">Certificate</div>
+        <div class="cred-level-req">Full pastoral duties. Can vote at biannual conference. Can issue marriage, baptism, and dedication certificates. Cannot contest elections.</div>
+        <div class="cred-level-tag cred-tag-2">Full pastoral</div>
+      </div>
+      <div class="cred-level" style="border-color:rgba(184,134,11,0.35)">
+        <div class="cred-level-num" style="color:var(--gold)">Level 3</div>
+        <div class="cred-level-name">Ordination</div>
+        <div class="cred-level-req">Typically 7–10 years of service. Based on performance, knowledge, and character evaluation. Required to contest any EC or leadership position.</div>
+        <div class="cred-level-tag cred-tag-3">Election eligible</div>
+      </div>
+    </div>
+
+    <div class="tier-label" style="margin-bottom:8px">Credential approval workflow</div>
+    <div class="flow-card">
+      <div class="flow-body">
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--blue-l);color:var(--blue-t)">1</div>
+          <div class="step-content">
+            <div class="step-name">Pastor applies online</div>
+            <div class="step-detail">Submits application form, supporting documents, and applicable fee via agmdc.in portal</div>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--green-l);color:var(--green-t)">2</div>
+          <div class="step-content">
+            <div class="step-name">Section Presbyter reviews and endorses</div>
+            <div class="step-detail">Verifies local conduct, ministry performance, and theological knowledge. Signs off digitally.</div>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--amber-l);color:var(--amber)">3</div>
+          <div class="step-content">
+            <div class="step-name">Regional Director approves</div>
+            <div class="step-detail">Reviews regional record and forwards to Executive Committee</div>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--gold-pale);color:var(--navy)">4</div>
+          <div class="step-content">
+            <div class="step-name">Executive Committee issues credential</div>
+            <div class="step-detail">Digital certificate generated with unique AGMDC ID. WhatsApp notification + downloadable PDF issued to pastor.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--blue-l);border-radius:9px;padding:9px 12px;font-size:10px;color:var(--blue-t);line-height:1.6">
+      Churches also hold credentials (as recognised AG churches). Church credential process involves section, regional, and EC approval with compliance checks on membership, reporting, and governance.
+    </div>
+  </div>
+
+  <!-- COMPLAINTS -->
+  <div class="section" id="s-complaints">
+    <div class="tier-label" style="margin-bottom:8px">Complaint escalation chain</div>
+    <div class="flow-card">
+      <div class="complaint-chain">
+        <div class="complaint-node">
+          <div class="c-num" style="background:var(--blue-l);color:var(--blue-t)">1</div>
+          <div>
+            <div class="c-name">Section level — first hearing</div>
+            <div class="c-desc">All complaints must be raised first at the section Presbyter. Section has authority to mediate, resolve, or escalate. Most disputes resolved here.</div>
+            <span class="c-badge" style="background:var(--blue-l);color:var(--blue-t)">Presbyter presides</span>
+          </div>
+        </div>
+        <div class="complaint-node">
+          <div class="c-num" style="background:var(--amber-l);color:var(--amber)">2</div>
+          <div>
+            <div class="c-name">Regional level — appeal or escalation</div>
+            <div class="c-desc">If unresolved at section, Regional Director takes over. Can hear witnesses, examine records, and issue regional rulings. Handles inter-section or inter-church disputes.</div>
+            <span class="c-badge" style="background:var(--amber-l);color:var(--amber)">Regional Director presides</span>
+          </div>
+        </div>
+        <div class="complaint-node">
+          <div class="c-num" style="background:var(--purple-l);color:var(--purple-t)">3</div>
+          <div>
+            <div class="c-name">Executive Committee — final district authority</div>
+            <div class="c-desc">Cases that cannot be resolved at regional level. EC has full disciplinary authority — including suspension, credential withdrawal, or church transfer orders.</div>
+            <span class="c-badge" style="background:var(--purple-l);color:var(--purple-t)">EC full authority</span>
+          </div>
+        </div>
+        <div class="complaint-node">
+          <div class="c-num" style="background:var(--red-l);color:var(--red)">4</div>
+          <div>
+            <div class="c-name">Tribunal — for serious or legal matters</div>
+            <div class="c-desc">Constituted by EC for cases involving legal proceedings, criminal allegations, or matters requiring formal adjudication. Tribunal decisions may be escalated to national AG leadership or civil courts if necessary.</div>
+            <span class="c-badge" style="background:var(--red-l);color:var(--red)">Formal tribunal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--red-l);border-radius:9px;padding:9px 12px;font-size:10px;color:var(--red);line-height:1.6;margin-top:4px">
+      Digital portal enables pastors and churches to file complaints online. Each case gets a unique reference number and is trackable through the portal at each escalation stage.
+    </div>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <div class="section" id="s-certificates">
+    <div class="tier-label" style="margin-bottom:8px">Official certificates issued through the district system</div>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div class="cert-icon"><i class="ti ti-rings-wedding" style="font-size:20px;color:var(--muted)"></i></div>
+        <div class="cert-name">Marriage certificate</div>
+        <div class="cert-issued-by">Prepared by local church pastor</div>
+        <div class="cert-auth" style="background:var(--amber-l);color:var(--amber)">Authorised by Presbyter</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon"><i class="ti ti-droplet" style="font-size:20px;color:var(--muted)"></i></div>
+        <div class="cert-name">Baptism certificate</div>
+        <div class="cert-issued-by">Issued by local church pastor</div>
+        <div class="cert-auth" style="background:var(--blue-l);color:var(--blue-t)">Issued at church level</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon"><i class="ti ti-baby-carriage" style="font-size:20px;color:var(--muted)"></i></div>
+        <div class="cert-name">Dedication certificate</div>
+        <div class="cert-issued-by">Child dedication ceremony</div>
+        <div class="cert-auth" style="background:var(--green-l);color:var(--green-t)">Issued at church level</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon"><i class="ti ti-arrow-right-circle" style="font-size:20px;color:var(--muted)"></i></div>
+        <div class="cert-name">Membership transfer</div>
+        <div class="cert-issued-by">Initiated by member's church</div>
+        <div class="cert-auth" style="background:var(--purple-l);color:var(--purple-t)">Presbyter notified</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon"><i class="ti ti-certificate" style="font-size:20px;color:var(--muted)"></i></div>
+        <div class="cert-name">Pastoral credential</div>
+        <div class="cert-issued-by">License / Certificate / Ordination</div>
+        <div class="cert-auth" style="background:var(--gold-pale);color:var(--amber)">Issued by EC</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon"><i class="ti ti-building-church" style="font-size:20px;color:var(--muted)"></i></div>
+        <div class="cert-name">Church credential</div>
+        <div class="cert-issued-by">Recognised AG church certificate</div>
+        <div class="cert-auth" style="background:var(--gold-pale);color:var(--amber)">Issued by EC</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:var(--bg2);border-radius:9px;padding:10px 12px;font-size:10px;color:var(--muted);line-height:1.7">
+      All certificates will be digitally generated through agmdc.in with a unique verification code (QR), signed digitally by the issuing authority, and downloadable as PDF. Marriage certificates require presbyter digital counter-signature before issuance.
+    </div>
+  </div>
+
+  <!-- TRANSFERS -->
+  <div class="section" id="s-transfers">
+    <div class="tier-label" style="margin-bottom:8px">Church &amp; pastor transfers</div>
+    <div class="transfer-flow">
+      <div style="font-size:11px;font-weight:500;color:var(--text);margin-bottom:10px">Executive Committee presides all transfers (~1,000 churches)</div>
+      <div class="transfer-row">
+        <div class="transfer-from">Church / Pastor<br><span style="font-size:9px;color:var(--muted)">Initiates transfer request</span></div>
+        <div class="transfer-arrow">→</div>
+        <div class="transfer-to">Current Presbyter<br><span style="font-size:9px;color:var(--muted)">No-objection certificate</span></div>
+      </div>
+      <div style="text-align:center;font-size:9px;color:var(--muted);margin:3px 0">↓</div>
+      <div class="transfer-row">
+        <div class="transfer-from">Regional Director<br><span style="font-size:9px;color:var(--muted)">Regional review &amp; forwarding</span></div>
+        <div class="transfer-arrow">→</div>
+        <div class="transfer-to">Executive Committee<br><span style="font-size:9px;color:var(--muted)">Final transfer order issued</span></div>
+      </div>
+      <div style="text-align:center;font-size:9px;color:var(--muted);margin:3px 0">↓</div>
+      <div class="transfer-row">
+        <div class="transfer-from">Receiving Presbyter<br><span style="font-size:9px;color:var(--muted)">Notified &amp; onboards church</span></div>
+        <div class="transfer-arrow">→</div>
+        <div class="transfer-to">District records updated<br><span style="font-size:9px;color:var(--muted)">System auto-updates</span></div>
+      </div>
+    </div>
+    <div class="tier-label" style="margin-bottom:8px">Membership transfers (believers)</div>
+    <div class="flow-card">
+      <div class="flow-body">
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--blue-l);color:var(--blue-t)">1</div>
+          <div class="step-content"><div class="step-name">Church initiates transfer request</div><div class="step-detail">On behalf of the member who wishes to move to another AG church</div></div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--green-l);color:var(--green-t)">2</div>
+          <div class="step-content"><div class="step-name">Presbyter notified</div><div class="step-detail">Section records updated. Cross-section transfers copied to Regional Director.</div></div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--gold-pale);color:var(--navy)">3</div>
+          <div class="step-content"><div class="step-name">Transfer letter issued digitally</div><div class="step-detail">Member receives transfer certificate. Receiving church confirms and updates records.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="tier-label" style="margin-bottom:8px">International regions &amp; churches</div>
+    <div class="intl-box"><div class="intl-flag">🌍</div><div><div class="intl-name">International regions</div><div class="intl-type">Malayalam AG churches outside India — coordinated through district office, separate credential track</div></div></div>
+    <div class="intl-box"><div class="intl-flag">✈️</div><div><div class="intl-name">Overseas church reporting</div><div class="intl-type">Submit annual returns to district; membership and family data tracked same as domestic churches</div></div></div>
+  </div>
+
+  <!-- DEPARTMENTS -->
+  <div class="section" id="s-departments">
+    <div class="tier-label" style="margin-bottom:8px">Appointed departments under EC oversight</div>
+    <div class="dept-grid">
+      <div class="dept-card"><div class="dept-icon"><i class="ti ti-users" style="font-size:18px;color:var(--muted)"></i></div><div class="dept-name">Women's Ministries</div><div class="dept-head">Appointed department head</div><div class="dept-tag" style="background:var(--pink,#FBEAF0);color:#72243E">Women's dept.</div></div>
+      <div class="dept-card"><div class="dept-icon"><i class="ti ti-sun" style="font-size:18px;color:var(--muted)"></i></div><div class="dept-name">Sunday School</div><div class="dept-head">Children &amp; youth education</div><div class="dept-tag" style="background:var(--green-l);color:var(--green-t)">Education dept.</div></div>
+      <div class="dept-card"><div class="dept-icon"><i class="ti ti-map-pin" style="font-size:18px;color:var(--muted)"></i></div><div class="dept-name">Missions</div><div class="dept-head">North India &amp; international</div><div class="dept-tag" style="background:var(--blue-l);color:var(--blue-t)">Missions dept.</div></div>
+      <div class="dept-card"><div class="dept-icon"><i class="ti ti-music" style="font-size:18px;color:var(--muted)"></i></div><div class="dept-name">Youth &amp; Music</div><div class="dept-head">AGMDC youth wing</div><div class="dept-tag" style="background:var(--purple-l);color:var(--purple-t)">Youth dept.</div></div>
+      <div class="dept-card"><div class="dept-icon"><i class="ti ti-heartbeat" style="font-size:18px;color:var(--muted)"></i></div><div class="dept-name">Men's Fellowship</div><div class="dept-head">Men's ministry dept.</div><div class="dept-tag" style="background:var(--amber-l);color:var(--amber)">Men's dept.</div></div>
+      <div class="dept-card"><div class="dept-icon"><i class="ti ti-scale" style="font-size:18px;color:var(--muted)"></i></div><div class="dept-name">Legal &amp; Finance</div><div class="dept-head">EC Secretary &amp; Treasurer</div><div class="dept-tag" style="background:var(--bg2);color:var(--muted)">EC direct</div></div>
+    </div>
+    <div style="margin-top:10px;background:var(--bg2);border-radius:9px;padding:10px 12px;font-size:10px;color:var(--muted);line-height:1.7">
+      Each department has its own appointed head (approved by EC), budget allocation, and can run district-level programs and campaigns. Department heads report to the Executive Committee. The platform will give each department its own management portal and conference room.
+    </div>
+  </div>
+
+  <!-- REPORTING -->
+  <div class="section" id="s-reporting">
+    <div class="tier-label" style="margin-bottom:8px">Annual church reporting to district</div>
+    <div class="church-rept">
+      <div class="rept-card"><div class="rept-icon"><i class="ti ti-home" style="font-size:22px;color:var(--muted)"></i></div><div class="rept-label">Total families</div><div class="rept-sub">Per church, annual</div></div>
+      <div class="rept-card"><div class="rept-icon"><i class="ti ti-users" style="font-size:22px;color:var(--muted)"></i></div><div class="rept-label">Total members</div><div class="rept-sub">Active roll count</div></div>
+      <div class="rept-card"><div class="rept-icon"><i class="ti ti-droplet" style="font-size:22px;color:var(--muted)"></i></div><div class="rept-label">Baptisms</div><div class="rept-sub">New believers baptised</div></div>
+      <div class="rept-card"><div class="rept-icon"><i class="ti ti-rings-wedding" style="font-size:22px;color:var(--muted)"></i></div><div class="rept-label">Marriages</div><div class="rept-sub">Conducted in the year</div></div>
+    </div>
+    <div class="flow-card">
+      <div class="flow-card-head">
+        <div class="flow-card-icon" style="background:var(--green-l);color:var(--green-t)"><i class="ti ti-chart-bar"></i></div>
+        <div><div class="flow-card-title">District statistics portal</div><div class="flow-card-sub">Aggregates church data across all 3 regions and 40–45 sections</div></div>
+      </div>
+      <div class="flow-body">
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--blue-l);color:var(--blue-t)">1</div>
+          <div class="step-content"><div class="step-name">Church submits annual return</div><div class="step-detail">Families, members, baptisms, marriages, dedications, membership transfers — all entered via portal</div></div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--green-l);color:var(--green-t)">2</div>
+          <div class="step-content"><div class="step-name">Presbyter verifies and signs off</div><div class="step-detail">Section Presbyter reviews church returns before forwarding to regional office</div></div>
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-circle" style="background:var(--gold-pale);color:var(--navy)">3</div>
+          <div class="step-content"><div class="step-name">District dashboard updates in real time</div><div class="step-detail">Executive Committee and Regional Directors see live district-wide statistics, growth trends, and delinquent reporters</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  const tabs = ['structure','conference','credentials','complaints','certificates','transfers','departments','reporting'];
+  document.querySelectorAll('.tab')[tabs.indexOf(id)].classList.add('active');
+}
+</script>

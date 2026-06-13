@@ -1,0 +1,184 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Enums removed for SQLite compatibility.
+
+// -----------------------------------------------------------------------------
+// MODELS
+// -----------------------------------------------------------------------------
+
+model User {
+  id                    String            @id @default(uuid())
+  name                  String
+  email                 String            @unique
+  passwordHash          String?
+  twoFactorSecret       String?
+  isTwoFactorEnabled    Boolean           @default(false)
+  role                  String            @default("MEMBER")
+  credentialLevel       String            @default("NONE")
+  
+  regionId              String?
+  region                Region?           @relation(fields: [regionId], references: [id])
+  
+  sectionId             String?
+  section               Section?          @relation(fields: [sectionId], references: [id])
+  
+  churchId              String?
+  church                Church?           @relation(fields: [churchId], references: [id])
+
+  customFields          String?             // Dynamic extensibility
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  
+  // Relations
+  credentialApplications CredentialApplication[]
+  complaintsSubmitted    Complaint[]      @relation("ComplaintSubmitter")
+}
+
+model Region {
+  id                    String            @id @default(uuid())
+  name                  String            @unique // e.g., South, Central, North
+  directorId            String?
+  
+  sections              Section[]
+  users                 User[]
+  customFields          String?
+}
+
+model Section {
+  id                    String            @id @default(uuid())
+  name                  String
+  regionId              String
+  region                Region            @relation(fields: [regionId], references: [id])
+  
+  churches              Church[]
+  users                 User[]
+  meetingMinutes        MeetingMinute[]
+  customFields          String?
+}
+
+model Church {
+  id                    String            @id @default(uuid())
+  name                  String
+  sectionId             String
+  section               Section           @relation(fields: [sectionId], references: [id])
+  
+  isRecognized          Boolean           @default(false)
+  customFields          String?
+  
+  users                 User[]
+  annualReturns         AnnualReturn[]
+}
+
+model CredentialApplication {
+  id                    String            @id @default(uuid())
+  userId                String
+  user                  User              @relation(fields: [userId], references: [id])
+  
+  levelRequested        String
+  status                String            @default("PENDING_PRESBYTER")
+  
+  presbyterApproved     Boolean           @default(false)
+  regionalApproved      Boolean           @default(false)
+  ecApproved            Boolean           @default(false)
+  
+  customFields          String?
+  createdAt             DateTime          @default(now())
+}
+
+model Complaint {
+  id                    String            @id @default(uuid())
+  refNumber             String            @unique
+  submitterId           String
+  submitter             User              @relation("ComplaintSubmitter", fields: [submitterId], references: [id])
+  
+  title                 String
+  description           String
+  level                 String            @default("SECTION")
+  status                String            @default("OPEN")
+  
+  customFields          String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+}
+
+model Certificate {
+  id                    String            @id @default(uuid())
+  type                  String            // Marriage, Baptism, Dedication, etc.
+  uniqueCode            String            @unique
+  
+  issuedById            String
+  authorizedById        String?
+  targetEntityId        String            // User ID or Church ID
+  
+  status                String            @default("VALID")
+  customFields          String?
+  issuedAt              DateTime          @default(now())
+}
+
+model Transfer {
+  id                    String            @id @default(uuid())
+  type                  String            // PASTOR, CHURCH, MEMBER
+  entityId              String
+  fromId                String
+  toId                  String
+  
+  status                String            @default("PENDING_PRESBYTER")
+  customFields          String?
+  createdAt             DateTime          @default(now())
+}
+
+model AnnualReturn {
+  id                    String            @id @default(uuid())
+  churchId              String
+  church                Church            @relation(fields: [churchId], references: [id])
+  
+  year                  Int
+  familiesCount         Int
+  membersCount          Int
+  baptismsCount         Int
+  marriagesCount        Int
+  
+  status                String            @default("SUBMITTED")
+  customFields          String?
+  createdAt             DateTime          @default(now())
+}
+
+model Department {
+  id                    String            @id @default(uuid())
+  name                  String            @unique
+  headId                String?
+  
+  customFields          String?
+}
+
+model CustomFieldDefinition {
+  id                    String            @id @default(uuid())
+  moduleName            String            // e.g., 'Complaint', 'User'
+  fieldName             String
+  fieldType             String            // TEXT, NUMBER, DATE, BOOLEAN
+  isRequired            Boolean           @default(false)
+  createdAt             DateTime          @default(now())
+}
+
+model MeetingMinute {
+  id          String   @id @default(uuid())
+  title       String
+  content     String?  // Rich-text HTML
+  fileUrl     String?  // Path for uploaded PDF/DOCX
+  isFolder    Boolean  @default(false)
+  
+  sectionId   String
+  section     Section  @relation(fields: [sectionId], references: [id])
+  
+  folderName  String   @default("General")
+  createdAt   DateTime @default(now())
+}
