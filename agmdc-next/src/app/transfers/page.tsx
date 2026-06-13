@@ -1,11 +1,49 @@
 import React from "react";
+import { prisma } from "@/lib/prisma";
 
-export default function TransfersModule() {
-  const transfers = [
-    { id: "TR-501", type: "Pastor Transfer", entity: "Rev. Paulson", from: "Trivandrum South", to: "Kochi Central", status: "Pending EC Order" },
-    { id: "TR-502", type: "Member Transfer", entity: "Thomas Family", from: "Bethel AG", to: "Zion AG", status: "Presbyter NOC Issued" },
-    { id: "TR-503", type: "Church Transfer", entity: "Grace AG", from: "Section 4", to: "Section 5", status: "Approved" },
-  ];
+export default async function TransfersModule() {
+  const dbTransfers = await prisma.transfer.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const transfers = await Promise.all(
+    dbTransfers.map(async tr => {
+      let entityName = "Unknown";
+      let fromName = "Unknown";
+      let toName = "Unknown";
+
+      if (tr.type === "PASTOR" || tr.type === "MEMBER") {
+        const user = await prisma.user.findUnique({ where: { id: tr.entityId } });
+        if (user) entityName = user.name;
+        
+        // Resolve from/to churches
+        const fromChurch = await prisma.church.findUnique({ where: { id: tr.fromId } });
+        if (fromChurch) fromName = fromChurch.name;
+        const toChurch = await prisma.church.findUnique({ where: { id: tr.toId } });
+        if (toChurch) toName = toChurch.name;
+      } else if (tr.type === "CHURCH") {
+        const church = await prisma.church.findUnique({ where: { id: tr.entityId } });
+        if (church) entityName = church.name;
+
+        // Resolve from/to sections
+        const fromSection = await prisma.section.findUnique({ where: { id: tr.fromId } });
+        if (fromSection) fromName = fromSection.name;
+        const toSection = await prisma.section.findUnique({ where: { id: tr.toId } });
+        if (toSection) toName = toSection.name;
+      }
+
+      return {
+        id: tr.id.substring(0, 8).toUpperCase(),
+        type: tr.type === "PASTOR" ? "Pastor Transfer" : tr.type === "MEMBER" ? "Member Transfer" : "Church Transfer",
+        entity: entityName,
+        from: fromName,
+        to: toName,
+        status: tr.status.replace(/_/g, " "),
+      };
+    })
+  );
 
   return (
     <div className="py-8">

@@ -1,11 +1,46 @@
 import React from "react";
+import { prisma } from "@/lib/prisma";
 
-export default function CredentialsModule() {
-  const applications = [
-    { name: "Pastor John Doe", requested: "LICENSE TO PREACH", step: 1, status: "Pending Presbyter" },
-    { name: "Pastor Samuel K.", requested: "CERTIFICATE", step: 3, status: "Pending EC Approval" },
-    { name: "Pastor Mathew V.", requested: "ORDINATION", step: 4, status: "Approved & Issued" },
-  ];
+export default async function CredentialsModule() {
+  const dbApplications = await prisma.credentialApplication.findMany({
+    include: {
+      user: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const applications = dbApplications.map(app => {
+    // Compute current step (1 to 4) based on approval flow flags
+    let step = 1;
+    let status = "Pending Presbyter";
+
+    if (app.presbyterApproved) {
+      step = 2;
+      status = "Pending Regional Approval";
+    }
+    if (app.regionalApproved) {
+      step = 3;
+      status = "Pending EC Approval";
+    }
+    if (app.ecApproved) {
+      step = 4;
+      status = "Approved & Issued";
+    }
+
+    // Use custom status if it is explicit
+    if (app.status && app.status !== "PENDING_PRESBYTER") {
+      status = app.status.replace(/_/g, " ");
+    }
+
+    return {
+      name: app.user ? app.user.name : "Unknown Applicant",
+      requested: app.levelRequested.replace(/_/g, " "),
+      step: step,
+      status: status,
+    };
+  });
 
   return (
     <div className="py-8">

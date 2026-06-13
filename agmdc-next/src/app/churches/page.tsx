@@ -1,11 +1,38 @@
 import React from "react";
+import { prisma } from "@/lib/prisma";
 
-export default function ChurchesModule() {
-  const churches = [
-    { id: "CH-001", name: "Bethel AG", section: "Trivandrum South", pastor: "Rev. Thomas", members: 450, recognized: true },
-    { id: "CH-002", name: "Zion AG", section: "Kochi Central", pastor: "Pr. Jacob", members: 120, recognized: false },
-    { id: "CH-003", name: "Grace AG", section: "Kozhikode North", pastor: "Rev. Samuel", members: 850, recognized: true },
-  ];
+export default async function ChurchesModule() {
+  const dbChurches = await prisma.church.findMany({
+    include: {
+      section: true,
+      users: true,
+      annualReturns: {
+        orderBy: {
+          year: "desc",
+        },
+        take: 1,
+      },
+    },
+  });
+
+  const churches = dbChurches.map(c => {
+    // Find a user in this church whose role is PASTOR
+    const pastorUser = c.users.find(u => u.role === "PASTOR");
+    const pastorName = pastorUser ? pastorUser.name : "No Pastor Assigned";
+
+    // Get the member count from the latest annual return, or default to users list size
+    const latestReturn = c.annualReturns[0];
+    const members = latestReturn ? latestReturn.membersCount : c.users.length;
+
+    return {
+      id: c.id.substring(0, 8).toUpperCase(), // Shorten UUID for table display
+      name: c.name,
+      section: c.section ? c.section.name : "Unassigned",
+      pastor: pastorName,
+      members: members,
+      recognized: c.isRecognized,
+    };
+  });
 
   return (
     <div className="py-8">

@@ -1,12 +1,24 @@
 import React from "react";
+import { prisma } from "@/lib/prisma";
 
-export default function ComplaintsModule() {
-  const escalations = [
-    { ref: "COMP-901", title: "Boundary Dispute", level: "SECTION", daysOpen: 4 },
-    { ref: "COMP-902", title: "Financial Misconduct", level: "REGIONAL", daysOpen: 12 },
-    { ref: "COMP-903", title: "Pastoral Ethics", level: "EXECUTIVE", daysOpen: 45 },
-    { ref: "COMP-904", title: "Church Property Rights", level: "TRIBUNAL", daysOpen: 120 },
-  ];
+export default async function ComplaintsModule() {
+  const dbComplaints = await prisma.complaint.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const escalations = dbComplaints.map(c => {
+    const timeDiff = Math.abs(Date.now() - new Date(c.createdAt).getTime());
+    const daysOpen = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+    return {
+      ref: c.refNumber,
+      title: c.title,
+      level: c.level,
+      daysOpen: daysOpen,
+    };
+  });
 
   const getLevelColor = (level: string) => {
     switch (level) {

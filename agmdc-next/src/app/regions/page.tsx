@@ -1,11 +1,37 @@
 import React from "react";
+import { prisma } from "@/lib/prisma";
 
-export default function RegionsModule() {
-  const regions = [
-    { name: "South Region", director: "Rev. Samuel V.", sections: 15, churches: 340, growth: "+2.1%" },
-    { name: "Central Region", director: "Rev. George A.", sections: 18, churches: 410, growth: "+3.4%" },
-    { name: "North Region", director: "Rev. Varghese K.", sections: 12, churches: 250, growth: "+1.8%" },
-  ];
+export default async function RegionsModule() {
+  const dbRegions = await prisma.region.findMany({
+    include: {
+      sections: {
+        include: {
+          churches: true,
+        },
+      },
+      users: true,
+    },
+  });
+
+  const regions = dbRegions.map(r => {
+    // Find a regional director if assigned, or default to TBD
+    const directorUser = r.users.find(u => u.role === "REGIONAL_DIRECTOR");
+    const directorName = directorUser ? directorUser.name : "Rev. TBD";
+
+    // Calculate total churches recursively across all sections in the region
+    const totalChurches = r.sections.reduce((acc, sec) => acc + sec.churches.length, 0);
+
+    // Map a growth placeholder based on the region
+    const growth = r.name.includes("South") ? "+2.1%" : r.name.includes("Central") ? "+3.4%" : "+1.8%";
+
+    return {
+      name: r.name,
+      director: directorName,
+      sections: r.sections.length,
+      churches: totalChurches,
+      growth,
+    };
+  });
 
   return (
     <div className="py-8">
