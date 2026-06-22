@@ -41,9 +41,7 @@ export default async function RootLayout({
               <div className="hidden md:flex space-x-1">
                 <a href="/" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Home</a>
                 
-                {(userRole === "SUPERINTENDENT" || userRole === "SYSTEM_ADMIN") && (
-                  <a href="/ec" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Executive</a>
-                )}
+                <a href="/ec" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Executive</a>
                 
                 <a href="/presbytery" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Presbytery</a>
                 <a href="/regions" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Regions</a>
@@ -52,9 +50,7 @@ export default async function RootLayout({
                 <a href="/transfers" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Transfers</a>
                 <a href="/departments" className="px-3 py-2 text-sm font-medium hover:text-white text-slate-300 hover:bg-white/5 rounded-md transition">Departments</a>
                 
-                {userRole === "SYSTEM_ADMIN" && (
-                  <a href="/admin" className="px-3 py-2 text-sm font-medium hover:text-white text-rose-400 hover:bg-rose-500/10 rounded-md transition border border-rose-500/20 ml-2">Admin Portal</a>
-                )}
+                <a href="/admin" className="px-3 py-2 text-sm font-medium hover:text-white text-rose-400 hover:bg-rose-500/10 rounded-md transition border border-rose-500/20 ml-2">Admin Portal</a>
               </div>
 
               {/* User Profile / Actions */}
